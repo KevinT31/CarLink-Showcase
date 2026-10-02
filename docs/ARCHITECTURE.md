@@ -1,30 +1,70 @@
-# CarLink — Architecture Notes
+# CarLink — Architecture
 
-## Product Layers
+## 1. Current Architectural Center
 
-1. **Mobile Experience** — onboarding, profiles, trips, networking.
-2. **Location Layer** — maps and geocoding.
-3. **State / Storage** — app state and secure device data.
-4. **Backend Boundary** — future/production service integrations.
+CarLink is currently strongest as a mobile MVP. The public showcase therefore separates the implemented mobile layer from the production backend direction.
 
-## Logical Flow
+## 2. Mobile Layer
+
+The application uses:
+
+- React Native / Expo
+- React Navigation
+- Zustand
+- AsyncStorage
+- SecureStore
+- Axios
+- location/map tooling
+- Jest
+
+## 3. State Boundaries
+
+### General application state
+
+Persisted through normal client-side state/storage mechanisms.
+
+### Sensitive authentication material
+
+Stored separately using SecureStore.
+
+This separation reduces the risk of treating all local state as equally sensitive.
+
+## 4. Location Layer
+
+The private project contains map/geocoding work and documents OpenStreetMap/Nominatim attribution, caching and rate-limit considerations.
+
+## 5. Production Backend Direction
+
+The private README describes a target architecture with:
+
+- Node.js / Express or NestJS
+- PostgreSQL + Prisma
+- JWT / OAuth
+- WebSockets
+- payments
+- media/object storage
+
+Those items are represented in this showcase as architectural direction, not automatically as completed production services.
+
+## 6. Diagram
 
 ```mermaid
 flowchart TB
-    User --> App[React Native / Expo]
-    App --> State[Zustand]
-    App --> Secure[SecureStore]
-    App --> Maps[Leaflet / OSM]
+    User --> Expo[React Native / Expo]
+    Expo --> Nav[Navigation]
+    Expo --> State[Zustand]
+    Expo --> Storage[AsyncStorage]
+    Expo --> Secrets[SecureStore]
+    Expo --> Location[Maps / Geocoding]
+    Expo --> Service[Service Layer]
 
-    App --> API[Backend API]
-    API --> DB[PostgreSQL]
-    API --> Realtime[WebSockets]
-    API --> Media[Media Storage]
+    Service -. future/production .-> Backend
+    Backend -.-> Postgres[(PostgreSQL)]
+    Backend -.-> Realtime[Realtime]
+    Backend -.-> Payments
+    Backend -.-> Media
 ```
 
-## Design Considerations
+## 7. Design Principle
 
-- Consumer mobile UX is the primary product surface.
-- Location and route experiences are core capabilities.
-- Sensitive authentication state is separated from general local persistence.
-- The MVP distinguishes implemented mobile work from planned production services.
+The showcase avoids presenting planned backend integrations as completed implementation. The mobile product work is documented separately from production targets.
