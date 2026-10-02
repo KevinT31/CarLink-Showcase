@@ -89,6 +89,10 @@ The production backend, payments and external integrations are represented as ar
 
 The source repository remains private to protect implementation details and future product work.
 
+## More Documentation
+
+[Architecture notes](./docs/ARCHITECTURE.md)
+
 ---
 
 **Private source repository · Public mobility-product case study**
